@@ -27,8 +27,3 @@ def extract_sent(path, regex):
         sentence_dir += sentences
         
     return sentence_dir
-
-#regex = r"<Content>(.*)\n<Date>" 
-#path = './data/TripAdvisor/Texts/'
-#
-#sentence_dir = extract_sent(path, regex)
