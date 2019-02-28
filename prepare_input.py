@@ -21,7 +21,7 @@ def least_freq_words(k, corp):
     corp = Counter(corp)
     infreq_words = set()
     for key in corp:
-        if corp[key] < 10:
+        if corp[key] < k:
             infreq_words.add(key)
     return infreq_words
 
@@ -62,18 +62,20 @@ def processed_sent(sentence_dir):
 
 
 
-text_path = './data/TripAdvisor/Texts/'
-regex = r"<Content>(.*)\n<Date>" 
-sentence_dir = extract_sent(text_path, regex)
+def prepare_inp():
+    text_path = './data/TripAdvisor/Texts/'
+    regex = r"<Content>(.*)\n<Date>" 
+    sentence_dir = extract_sent(text_path, regex)
+    
+    embedding_vector_size = 300
+    embedding_path = 'data/GoogleNews-vectors-negative300.bin'
+    embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path, 
+                                 binary=True)
+    
+    max_sent_length, sent_processed_dir = processed_sent(sentence_dir)
+    
+    return max_sent_length, sent_processed_dir
 
-embedding_vector_size = 300
-embedding_path = 'data/GoogleNews-vectors-negative300.bin'
-embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path, 
-                             binary=True)
-
-max_sent_length, sent_processed_dir = processed_sent(sentence_dir)
-
-sentence_embedding = []
 #for sent in sent_processed_dir:
 #    sent_embed_init = np.zeros((max_sent_length, embedding_vector_size))
 #    for i,word in enumerate(sent):
@@ -83,7 +85,7 @@ sentence_embedding = []
 #            pass
 #    
 #    sentence_embedding.append(sent_embed_init.T)
-##        
-##    
-##        
-##    
+#        
+#    
+#        
+#    
