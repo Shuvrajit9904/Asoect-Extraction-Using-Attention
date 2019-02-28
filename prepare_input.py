@@ -72,4 +72,18 @@ embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path,
                              binary=True)
 
 max_sent_length, sent_processed_dir = processed_sent(sentence_dir)
-sent_embed_init = np.zeros((embedding_vector_size, max_sent_length))
+
+sentence_embedding = []
+#for sent in sent_processed_dir:
+#    sent_embed_init = np.zeros((max_sent_length, embedding_vector_size))
+#    for i,word in enumerate(sent):
+#        try:
+#            sent_embed_init[i] = embedding[word]
+#        except:
+#            pass
+#    
+#    sentence_embedding.append(sent_embed_init.T)
+##        
+##    
+##        
+##    
