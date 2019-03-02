@@ -30,10 +30,10 @@ def stop_infreq_words(sentence_dir):
     vocab_count = {}
     for sent in sentence_dir:
         for word in sent.split():
-            if word in vocab_count:
-                vocab_count[word] += 1
+            if word.lower() in vocab_count:
+                vocab_count[word.lower()] += 1
             else:
-                vocab_count[word] = 1
+                vocab_count[word.lower()] = 1
         
     infreq_words = set()
     k = 10    
