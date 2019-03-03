@@ -41,7 +41,7 @@ def reconstruct_embed(k, training_inputs, M, T):
 
 def get_negative_samples(training_inputs, max_val, n):
     
-    rand_idx = tf.random.uniform([n], maxval=max_val,dtype=tf.dtypes.int32)
+    rand_idx = tf.random.uniform([n], maxval=max_val, dtype=tf.dtypes.int32)
     neg_samples = tf.gather(training_inputs, rand_idx)
     
     return neg_samples
@@ -60,18 +60,32 @@ def hinge_loss_neg_samples(rs, zs, n_i):
 
 def regularization_term(T):
     
+    tensor_norms = tf.norm(T, axis=1, keepdims=True)
+    Tn = tf.div(T, tensor_norms)    
+    num_rows = tf.shape(T)[0]    
+    U = tf.norm(tf.matmul(Tn, Tn, transpose_b=True) - tf.eye(num_rows))
     
+    return U
+    
+def total_loss(rs, zs, T):
+    n_i = tf.math.reduce_mean(get_negative_samples(training_inputs, 
+                                                   max_val, n),
+                          axis =2)
 
+    hinge_loss =  hinge_loss_neg_samples(rs, zs, n_i)  
+    U = regularization_term(T)
+    
+    total_loss = U + hinge_loss
+    
+    return total_loss
     
     
 sample_inp = training_inputs[0]
-
+k = 14
 T = tf.get_variable("T", [embedding_vector_size, k])
 M = tf.get_variable("M", [embedding_vector_size, embedding_vector_size])
 
 
-n_i = tf.math.reduce_mean(get_negative_samples(training_inputs, max_val, n),
-                          axis =2)
 
 rs = reconstruct_embed(k, training_inputs, M, T)
 zs = attention(training_inputs[0], M)

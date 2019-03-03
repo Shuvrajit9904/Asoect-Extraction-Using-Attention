@@ -54,7 +54,7 @@ def processed_sent(sentence_dir):
     for sent in sentence_dir:    
         tokenizer = RegexpTokenizer(r'\w+')
         sent_tokens = tokenizer.tokenize(sent)
-        sent_tokens = [w for w in sent_tokens if not w in elim_words]
+        sent_tokens = [w.lower() for w in sent_tokens if not w.lower() in elim_words]
         sent_processed_dir.append(sent_tokens)
         max_sent_length = max(max_sent_length, len(sent_tokens))
     
@@ -67,25 +67,39 @@ def prepare_inp():
     regex = r"<Content>(.*)\n<Date>" 
     sentence_dir = extract_sent(text_path, regex)
     
-    embedding_vector_size = 300
-    embedding_path = 'data/GoogleNews-vectors-negative300.bin'
-    embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path, 
-                                 binary=True)
+#    embedding_vector_size = 300
+#    embedding_path = 'data/GoogleNews-vectors-negative300.bin'
+#    embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path, 
+#                                 binary=True)
     
     max_sent_length, sent_processed_dir = processed_sent(sentence_dir)
     
     return max_sent_length, sent_processed_dir
 
-#for sent in sent_processed_dir:
-#    sent_embed_init = np.zeros((max_sent_length, embedding_vector_size))
-#    for i,word in enumerate(sent):
-#        try:
-#            sent_embed_init[i] = embedding[word]
-#        except:
-#            pass
-#    
-#    sentence_embedding.append(sent_embed_init.T)
-#        
-#    
-#        
-#    
+max_sent_length, sent_processed_dir = prepare_inp()
+#test_sent_processed_dir = sent_processed_dir[:100000]
+
+embedding_vector_size = 300
+embedding_path = 'data/GoogleNews-vectors-negative300.bin'
+embedding = gensim.models.KeyedVectors.load_word2vec_format(embedding_path, 
+                             binary=True)
+
+est_max_sent_length = 100
+sentence_embedding = []
+unk = set()
+
+for sent in sent_processed_dir[:100000]:
+    sent_embed_init = np.zeros((est_max_sent_length, embedding_vector_size))
+    if len(sent) < est_max_sent_length:
+        for i,word in enumerate(sent):
+            try:
+                sent_embed_init[i] = embedding[word]
+            except:
+                unk.add(word)
+                pass
+    
+        sentence_embedding.append(sent_embed_init.T)
+        
+    
+        
+    
