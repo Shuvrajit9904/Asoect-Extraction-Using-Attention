@@ -67,7 +67,7 @@ def regularization_term(T):
     
     return U
     
-def total_loss(rs, zs, T):
+def total_loss(rs, zs, T, training_inputs, max_val, n):
     n_i = tf.reduce_mean(get_negative_samples(training_inputs, 
                                                    max_val, n),
                           axis =2)
