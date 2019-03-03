@@ -22,7 +22,7 @@ training_inputs = tf.placeholder(shape=[None, 300, 645],
 
 def attention(training_inputs, M):    
     
-    ys = tf.expand_dims(tf.math.reduce_mean(training_inputs, axis=1), axis=1)
+    ys = tf.expand_dims(tf.reduce_mean(training_inputs, axis=1), axis=1)
     d1 = tf.matmul(M, ys)
     d = tf.matmul(training_inputs, d1, transpose_a=True)    
     a = tf.nn.softmax(d)
@@ -68,7 +68,7 @@ def regularization_term(T):
     return U
     
 def total_loss(rs, zs, T):
-    n_i = tf.math.reduce_mean(get_negative_samples(training_inputs, 
+    n_i = tf.reduce_mean(get_negative_samples(training_inputs, 
                                                    max_val, n),
                           axis =2)
 
