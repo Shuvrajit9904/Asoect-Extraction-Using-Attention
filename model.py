@@ -9,7 +9,7 @@ Created on Sat Feb 23 15:35:19 2019
 import tensorflow as tf
 import numpy as np
 
-from prepare_input import *
+#from prepare_input import *
 
 
 
