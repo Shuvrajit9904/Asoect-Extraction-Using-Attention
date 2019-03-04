@@ -9,6 +9,7 @@ Created on Tue Feb 26 23:14:25 2019
 import numpy as np
 import gensim
 import operator
+import pickle
 
 from functools import reduce
 from build_sentence_corp import extract_sent
@@ -88,7 +89,11 @@ est_max_sent_length = 100
 sentence_embedding = []
 unk = set()
 
+ct = 0
+batch_size = 50
+
 for sent in sent_processed_dir:
+    ct += 1
     sent_embed_init = np.zeros((est_max_sent_length, embedding_vector_size))
     if len(sent) < est_max_sent_length:
         for i,word in enumerate(sent):
@@ -99,6 +104,16 @@ for sent in sent_processed_dir:
                 pass
     
         sentence_embedding.append(sent_embed_init.T)
+    if ct % 50 == 0 or ct == len(sent_processed_dir)-1:
+        idx = ct // 50
+        filename = './data/batch_embedding/batch-'+str(idx)+'.dat'
+        sentence_embedding = np.asarray(sentence_embedding, dtype=np.float32)
+        with open(filename, 'wb') as f:            
+            pickle.dump(sentence_embedding, f)
+        sentence_embedding = []
+        
+        
+        
         
     
         
