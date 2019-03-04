@@ -88,7 +88,7 @@ est_max_sent_length = 100
 sentence_embedding = []
 unk = set()
 
-for sent in sent_processed_dir[:100000]:
+for sent in sent_processed_dir:
     sent_embed_init = np.zeros((est_max_sent_length, embedding_vector_size))
     if len(sent) < est_max_sent_length:
         for i,word in enumerate(sent):
