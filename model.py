@@ -11,12 +11,6 @@ import tensorflow as tf
 
 #from prepare_input import *
 
-
-
-
-#training_inputs = tf.placeholder(shape=[None, 300, 100], 
-#                                         dtype=tf.float32)  
-
 def attention(training_inputs, M):    
     
     ys = tf.expand_dims(tf.reduce_mean(training_inputs, axis=2), axis=2)
