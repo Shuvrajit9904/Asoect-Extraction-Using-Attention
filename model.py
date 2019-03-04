@@ -41,7 +41,7 @@ def reconstruct_embed(k, zs, training_inputs, M, T):
 
 def get_negative_samples(training_inputs, max_val, n):
     
-    rand_idx = tf.random.uniform([n], maxval=max_val, dtype=tf.dtypes.int32)
+    rand_idx = tf.random_uniform([n], maxval=max_val, dtype=tf.dtypes.int32)
     neg_samples = tf.gather(training_inputs, rand_idx)
     
     return neg_samples
